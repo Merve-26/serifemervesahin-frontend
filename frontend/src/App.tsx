@@ -64,7 +64,11 @@ function App() {
         }
       />
 
-      <Navigation current={page} onNavigate={go} />
+      <Navigation
+  current={page}
+  onNavigate={go}
+  eventTitle={selectedEvent?.title}
+/>
 
       <main>
         {page === "home" && (

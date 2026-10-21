@@ -1,12 +1,16 @@
-
 import type { PageName } from "../../types/page";
 
 interface NavigationProps {
   current: PageName;
   onNavigate: (page: PageName) => void;
+  eventTitle?: string;
 }
 
-function Navigation({ current, onNavigate }: NavigationProps) {
+function Navigation({
+  current,
+  onNavigate,
+  eventTitle,
+}: NavigationProps) {
   const menuItems: { label: string; page: PageName }[] = [
     { label: "Ana Sayfa", page: "home" },
     { label: "Etkinlikler", page: "events" },
@@ -24,6 +28,10 @@ function Navigation({ current, onNavigate }: NavigationProps) {
           {item.label}
         </button>
       ))}
+
+      {current === "detail" && eventTitle && (
+        <span className="active">{eventTitle}</span>
+      )}
     </nav>
   );
 }
