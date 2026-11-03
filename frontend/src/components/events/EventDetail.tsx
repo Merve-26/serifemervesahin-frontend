@@ -1,14 +1,13 @@
 
 import type { CampusEvent } from "../../types/campus-event";
 import { formatDate } from "../../utils/format-date";
+import { Link } from "react-router-dom";
 
 interface EventDetailProps {
   event: CampusEvent;
-  onBack: () => void;
-  onEdit: (id: string) => void;
 }
 
-function EventDetail({ event, onBack, onEdit }: EventDetailProps) {
+function EventDetail({ event }: EventDetailProps) {
   return (
     <section>
       <h2>{event.title}</h2>
@@ -28,13 +27,13 @@ function EventDetail({ event, onBack, onEdit }: EventDetailProps) {
       <p><strong>Kapasite:</strong> {event.capacity} kişi</p>
       <p>{event.description}</p>
 
-      <button onClick={() => onEdit(event.id)}>
+      <Link to={`/admin/${event.id}/edit`}>
         Etkinliği Güncelle
-      </button>
+      </Link>
 
-      <button onClick={onBack}>
+      <Link to="/events">
         Etkinliklere dön
-      </button>
+      </Link>
     </section>
   );
 }

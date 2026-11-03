@@ -1,13 +1,13 @@
 
 import type { CampusEvent } from "../../types/campus-event";
 import { formatDate } from "../../utils/format-date";
+import { Link } from "react-router-dom";
 
 interface EventCardProps {
   event: CampusEvent;
-  onShowDetail: (id: string) => void;
 }
 
-function EventCard({ event, onShowDetail }: EventCardProps) {
+function EventCard({ event }: EventCardProps) {
   return (
     <article className="etkinlik-karti">
       {event.image && (
@@ -25,9 +25,9 @@ function EventCard({ event, onShowDetail }: EventCardProps) {
       <p><strong>Yer:</strong> {event.location}</p>
       <p>{event.description}</p>
 
-      <button onClick={() => onShowDetail(event.id)}>
+      <Link to={`/events/${event.id}`}>
         Detayları gör
-      </button>
+      </Link>
     </article>
   );
 }

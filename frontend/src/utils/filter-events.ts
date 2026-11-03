@@ -1,6 +1,5 @@
 
 import type { CampusEvent, Category } from "../types/campus-event";
-import { events } from "../data/events";
 
 export function searchEvents(
   eventList: CampusEvent[],
@@ -15,9 +14,7 @@ export function searchEvents(
   return eventList.filter(
     (event) =>
       event.title.toLocaleLowerCase("tr-TR").includes(normalizedQuery) ||
-      event.description
-        .toLocaleLowerCase("tr-TR")
-        .includes(normalizedQuery),
+      event.description.toLocaleLowerCase("tr-TR").includes(normalizedQuery),
   );
 }
 
@@ -32,6 +29,9 @@ export function filterByCategory(
   return eventList.filter((event) => event.category === category);
 }
 
-export function findEventById(id: string): CampusEvent | undefined {
-  return events.find((event) => event.id === id);
+export function findEventById(
+  eventList: CampusEvent[],
+  id: string,
+): CampusEvent | undefined {
+  return eventList.find((event) => event.id === id);
 }

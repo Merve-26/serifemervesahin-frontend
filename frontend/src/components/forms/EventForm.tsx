@@ -1,73 +1,159 @@
 
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
+import type { EventFormData } from "../../types/campus-event";
+import { validateEvent } from "../../utils/validate-event";
 
 interface EventFormProps {
-  onSubmit: () => void;
+  initialData?: EventFormData;
+  onSubmit: (data: EventFormData) => void;
   onCancel?: () => void;
 }
 
-function EventForm({ onSubmit, onCancel }: EventFormProps) {
+const emptyForm: EventFormData = {
+  title: "",
+  category: "",
+  date: "",
+  time: "",
+  location: "",
+  capacity: "",
+  description: "",
+  image: "",
+};
+
+function EventForm({
+  initialData,
+  onSubmit,
+  onCancel,
+}: EventFormProps) {
+  const [formData, setFormData] = useState<EventFormData>(
+    initialData ?? emptyForm
+  );
+
+  const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    setFormData(initialData ?? emptyForm);
+  }, [initialData]);
+
+  function handleChange(
+    field: keyof EventFormData,
+    value: string
+  ) {
+    setFormData((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
+  }
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onSubmit();
+
+    const validationErrors = validateEvent(formData);
+    setErrors(validationErrors);
+
+    if (validationErrors.length > 0) {
+      return;
+    }
+
+    onSubmit(formData);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="etkinlik-adi">Etkinlik adı:</label>
-      <input
-        id="etkinlik-adi"
-        type="text"
-        placeholder="Etkinlik adını girin"
-        required
-      />
+    <form onSubmit={handleSubmit} noValidate>
+      <div>
+        <label>Etkinlik Adı</label>
+        <input
+          type="text"
+          value={formData.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+        />
+      </div>
 
-      <label htmlFor="etkinlik-kategori">Kategori:</label>
-      <select id="etkinlik-kategori" required defaultValue="">
-        <option value="" disabled>Kategori seçin</option>
-        <option value="Seminer">Seminer</option>
-        <option value="Atölye">Atölye</option>
-        <option value="Söyleşi">Söyleşi</option>
-        <option value="Yarışma">Yarışma</option>
-        <option value="Konser">Konser</option>
-        <option value="Spor">Spor</option>
-      </select>
+      <div>
+        <label>Kategori</label>
+        <select
+          value={formData.category}
+          onChange={(e) => handleChange("category", e.target.value)}
+        >
+          <option value="">Kategori seçiniz</option>
+          <option value="Seminer">Seminer</option>
+          <option value="Atölye">Atölye</option>
+          <option value="Söyleşi">Söyleşi</option>
+          <option value="Yarışma">Yarışma</option>
+          <option value="Konser">Konser</option>
+          <option value="Spor">Spor</option>
+        </select>
+      </div>
 
-      <label htmlFor="etkinlik-tarihi">Tarih:</label>
-      <input id="etkinlik-tarihi" type="date" required />
+      <div>
+        <label>Tarih</label>
+        <input
+          type="date"
+          value={formData.date}
+          onChange={(e) => handleChange("date", e.target.value)}
+        />
+      </div>
 
-      <label htmlFor="etkinlik-saati">Saat:</label>
-      <input id="etkinlik-saati" type="time" required />
+      <div>
+        <label>Saat</label>
+        <input
+          type="time"
+          value={formData.time}
+          onChange={(e) => handleChange("time", e.target.value)}
+        />
+      </div>
 
-      <label htmlFor="etkinlik-yeri">Yer:</label>
-      <input
-        id="etkinlik-yeri"
-        type="text"
-        placeholder="Etkinlik yerini girin"
-        required
-      />
+      <div>
+        <label>Yer</label>
+        <input
+          type="text"
+          value={formData.location}
+          onChange={(e) => handleChange("location", e.target.value)}
+        />
+      </div>
 
-      <label htmlFor="etkinlik-kapasitesi">Kapasite:</label>
-      <input
-        id="etkinlik-kapasitesi"
-        type="number"
-        min="1"
-        placeholder="Katılımcı sayısı"
-        required
-      />
+      <div>
+        <label>Kapasite</label>
+        <input
+          type="number"
+          value={formData.capacity}
+          onChange={(e) => handleChange("capacity", e.target.value)}
+        />
+      </div>
 
-      <label htmlFor="etkinlik-aciklamasi">Açıklama:</label>
-      <textarea
-        id="etkinlik-aciklamasi"
-        placeholder="Etkinliği açıklayın"
-        required
-      />
+      <div>
+        <label>Açıklama</label>
+        <textarea
+          value={formData.description}
+          onChange={(e) => handleChange("description", e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label>Görsel URL (isteğe bağlı)</label>
+        <input
+          type="text"
+          value={formData.image ?? ""}
+          onChange={(e) => handleChange("image", e.target.value)}
+        />
+      </div>
+
+      {errors.length > 0 && (
+        <ul>
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
+      )}
 
       <button type="submit">Kaydet</button>
 
-      <button type="button" onClick={onCancel}>
-        İptal
-      </button>
+      {onCancel && (
+        <button type="button" onClick={onCancel}>
+          İptal
+        </button>
+      )}
     </form>
   );
 }

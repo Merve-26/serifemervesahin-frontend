@@ -1,156 +1,51 @@
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import { events } from "./data/events";
-import type { Category } from "./types/campus-event";
-import type { PageName } from "./types/page";
-import { searchEvents, filterByCategory } from "./utils/filter-events";
-import Footer from "./components/layout/Footer";
+
 import Header from "./components/layout/Header";
 import Navigation from "./components/layout/Navigation";
-import EventList from "./components/events/EventList";
-import EventFilter from "./components/events/EventFilter";
-import EventDetail from "./components/events/EventDetail";
-import EventForm from "./components/forms/EventForm";
+import Footer from "./components/layout/Footer";
+
+import HomePage from "./pages/HomePage";
+import EventsPage from "./pages/EventsPage";
+import EventDetailPage from "./pages/EventDetailPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import AdminPage from "./pages/AdminPage";
+import AddEventPage from "./pages/AddEventPage";
+import EditEventPage from "./pages/EditEventPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
-  const [page, setPage] = useState<PageName>("home");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<Category | "">("");
-
-  const filteredEvents = filterByCategory(
-    searchEvents(events, searchText),
-    selectedCategory,
-  );
-
-  const selectedEvent = events.find(
-    (event) => event.id === selectedId,
-  );
+  const location = useLocation();
 
   useEffect(() => {
-    const titles: Record<PageName, string> = {
-      home: "Ana Sayfa",
-      events: "Etkinlikler",
-      detail: "Etkinlik Detayı",
-      add: "Etkinlik Ekle",
-      update: "Etkinliği Güncelle",
-    };
-
-    document.title = `Kampüs Etkinlikleri — ${titles[page]}`;
-  }, [page]);
-
-  function go(nextPage: PageName, id?: string) {
-    if (id !== undefined) {
-      setSelectedId(id);
-    }
-
-    setPage(nextPage);
-  }
+    document.title = "Kampüs Etkinlikleri";
+  }, [location]);
 
   return (
     <>
-      <Header
-        title={
-          page === "home"
-            ? "Kampüs Etkinlikleri"
-            : page === "events"
-              ? "Etkinlikler"
-              : page === "add"
-                ? "Etkinlik Ekle"
-                : page === "update"
-                  ? "Etkinliği Güncelle"
-                  : selectedEvent?.title ?? "Etkinlik Detayı"
-        }
-      />
-
-      <Navigation
-  current={page}
-  onNavigate={go}
-  eventTitle={selectedEvent?.title}
-/>
+      <Header title="Kampüs Etkinlikleri" />
+      <Navigation />
 
       <main>
-        {page === "home" && (
-          <section>
-            <h2>Ana Sayfa</h2>
-            <h3>Yaklaşan Etkinlikler</h3>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:id" element={<EventDetailPage />} />
 
-            <EventList
-              events={[...events]
-                .sort((a, b) => {
-                  const dateA = a.date.split("-").reverse().join("-");
-                  const dateB = b.date.split("-").reverse().join("-");
-                  return dateA.localeCompare(dateB);
-                })
-                .slice(0, 2)}
-              onShowDetail={(id) => go("detail", id)}
-            />
-          </section>
-        )}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        {page === "events" && (
-          <section>
-            <h2>Etkinlikler</h2>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/new" element={<AddEventPage />} />
+          <Route path="/admin/:id/edit" element={<EditEventPage />} />
 
-            <EventFilter
-              searchText={searchText}
-              category={selectedCategory}
-              categories={[...new Set(events.map((event) => event.category))]}
-              onSearchChange={setSearchText}
-              onCategoryChange={setSelectedCategory}
-            />
-
-            <p>
-              {filteredEvents.length === 0
-                ? "Aramanızla eşleşen etkinlik bulunamadı."
-                : `${filteredEvents.length} etkinlik bulundu.`}
-            </p>
-
-            <EventList
-              events={filteredEvents}
-              onShowDetail={(id) => go("detail", id)}
-              emptyText="Aramanızla eşleşen etkinlik bulunamadı."
-            />
-          </section>
-        )}
-
-        {page === "detail" && (
-          selectedEvent ? (
-            <EventDetail
-              event={selectedEvent}
-              onBack={() => go("events")}
-              onEdit={(id) => go("update", id)}
-            />
-          ) : (
-            <section>
-              <h2>Etkinlik bulunamadı</h2>
-              <p>Görüntülenecek bir etkinlik seçilmedi.</p>
-              <button onClick={() => go("events")}>
-                Etkinliklere dön
-              </button>
-            </section>
-          )
-        )}
-
-        {(page === "add" || page === "update") && (
-          <section>
-            <h2>
-              {page === "add" ? "Etkinlik Ekle" : "Etkinliği Güncelle"}
-            </h2>
-
-           <EventForm
-  onSubmit={() => {
-    alert(
-      page === "add"
-        ? "Form kontrol edildi. Etkinlik kaydetme henüz etkin değil."
-        : "Form kontrol edildi. Güncelleme henüz etkin değil.",
-    );
-  }}
-  onCancel={() => go("events")}
-/>
-          </section>
-        )}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
 
       <Footer />
