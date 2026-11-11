@@ -13,7 +13,7 @@ app.get("/health", (req, res) => {
   res.json({
     status: "ok",
     time: new Date().toISOString(),
-    student: "ÖĞRENCİ_NUMARANI_BURAYA_YAZ"
+    student: "2416501006"
   });
 });
 
