@@ -59,35 +59,5 @@ export const events = [
     location: "Kapalı Spor Salonu",
     description: "Farklı bölümlerden öğrencilerin katılabileceği, dostça rekabet ve takım ruhunu öne çıkaran masa tenisi turnuvası.",
     capacity: 32
-  },
-  {
-    id: "event-7",
-    title: "Pixel Lab: Dijital Sanat Atölyesi",
-    category: "Atölye",
-    date: "03-12-2026",
-    time: "13:30",
-    location: "Tasarım ve Bilgisayar Laboratuvarı",
-    description: "Katılımcılar piksel sanatın temel tekniklerini öğrenerek kendi dijital karakterlerini ve küçük tasarımlarını oluşturacak.",
-    capacity: 30
-  },
-  {
-    id: "event-8",
-    title: "Startup Fikir Maratonu",
-    category: "Yarışma",
-    date: "06-12-2026",
-    time: "10:00",
-    location: "Teknoloji ve İnovasyon Merkezi",
-    description: "Öğrenciler günlük hayattaki problemlere yenilikçi çözümler geliştirerek fikirlerini jüriye sunacak.",
-    capacity: 50
-  },
-  {
-    id: "event-9",
-    title: "Bir Film, Bin Fikir: Bilim Kurgu Gecesi",
-    category: "Sosyal",
-    date: "09-12-2026",
-    time: "18:30",
-    location: "Kampüs Amfi",
-    description: "Bilim kurgu temalı film gösteriminin ardından teknoloji, gelecek ve sinema üzerine öğrencilerin katılabileceği bir sohbet gerçekleştirilecek.",
-    capacity: 120
   }
 ];
