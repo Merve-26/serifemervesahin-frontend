@@ -1,63 +1,59 @@
-import { events } from "../data/events.js";
+import mongoose from "mongoose";
+import { Event } from "../models/event-model.js";
 
 // Tüm etkinlikleri listele
-export function getEvents(req, res) {
-  const { category } = req.query;
+export async function getEvents(req, res, next) {
+  try {
+    const { category } = req.query;
 
-  const eventList = category
-    ? events.filter((event) => event.category === category)
-    : events;
+    const filter = category ? { category } : {};
 
-  res.json(eventList);
+    const eventList = await Event.find(filter).sort({ date: 1 });
+
+    res.json(eventList);
+  } catch (err) {
+    next(err);
+  }
 }
 
 // ID'ye göre etkinlik getir
-export function getEventById(req, res) {
-  const event = events.find((item) => item.id === req.params.id);
+export async function getEventById(req, res, next) {
+  try {
+    const { id } = req.params;
 
-  if (!event) {
-    return res.status(404).json({
-      error: {
-        message: "Event not found"
-      }
-    });
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(404).json({
+        error: { message: "Event not found" }
+      });
+    }
+
+    const event = await Event.findById(id);
+
+    if (!event) {
+      return res.status(404).json({
+        error: { message: "Event not found" }
+      });
+    }
+
+    res.json(event);
+  } catch (err) {
+    next(err);
   }
-
-  res.json(event);
 }
 
 // Yeni etkinlik oluştur
-export function createEvent(req, res) {
-  const {
-    title,
-    category,
-    date,
-    capacity,
-    time,
-    location,
-    description
-  } = req.body ?? {};
+export async function createEvent(req, res, next) {
+  try {
+    const newEvent = await Event.create(req.body ?? {});
 
-  if (!title || !category || !date) {
-    return res.status(400).json({
-      error: {
-        message: "title, category and date are required"
-      }
-    });
+    res.status(201).json(newEvent);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({
+        error: { message: err.message }
+      });
+    }
+
+    next(err);
   }
-
-  const newEvent = {
-    id: `event-${Date.now()}`,
-    title,
-    category,
-    date,
-    capacity: Number(capacity) || 0,
-    time: time ?? "",
-    location: location ?? "",
-    description: description ?? ""
-  };
-
-  events.push(newEvent);
-
-  res.status(201).json(newEvent);
 }

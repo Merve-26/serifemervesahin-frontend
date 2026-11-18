@@ -1,4 +1,3 @@
-
 import express from "express";
 import cors from "cors";
 import eventRoutes from "./routes/event-routes.js";
@@ -24,6 +23,17 @@ app.use((req, res) => {
   res.status(404).json({
     error: {
       message: "Route not found"
+    }
+  });
+});
+
+// Genel hata yakalama middleware'i
+app.use((err, req, res, next) => {
+  console.error(err.message);
+
+  res.status(500).json({
+    error: {
+      message: "Internal Server Error"
     }
   });
 });
