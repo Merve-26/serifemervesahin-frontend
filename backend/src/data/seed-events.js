@@ -2,7 +2,7 @@ export const seedEvents = [
   {
     title: "Geleceği Kodlamak: Yapay Zekâ Buluşması",
     category: "Söyleşi",
-    date: "2026-11-15",
+    date: "15-11-2026",
     time: "13:00",
     location: "A Blok Konferans Salonu",
     description: "Yapay zekânın günlük yaşamı nasıl değiştirdiği, gelecekteki meslekler ve yeni teknolojiler üzerine uzman konuklarla keyifli bir söyleşi.",
@@ -11,7 +11,7 @@ export const seedEvents = [
   {
     title: "24 Saatte Fikirden Uygulamaya",
     category: "Atölye",
-    date: "2026-11-18",
+    date: "18-11-2026",
     time: "10:00",
     location: "Bilgisayar Laboratuvarı 1",
     description: "Katılımcılar ekipler hâlinde bir mobil uygulama fikri geliştirerek tasarım ve kodlama süreçlerini deneyimleyecek.",
@@ -20,7 +20,7 @@ export const seedEvents = [
   {
     title: "Dijital Dedektifler: Siber Güvenlik Günü",
     category: "Seminer",
-    date: "2026-11-21",
+    date: "21-11-2026",
     time: "14:00",
     location: "B Blok 102",
     description: "Dijital dünyadaki güvenlik açıkları, kişisel verilerin korunması ve güvenli internet kullanımı üzerine bilgilendirici bir etkinlik.",
@@ -29,7 +29,7 @@ export const seedEvents = [
   {
     title: "CodeRush: Algoritma Maratonu",
     category: "Yarışma",
-    date: "2026-11-24",
+    date: "24-11-2026",
     time: "11:00",
     location: "Bilgisayar Laboratuvarı 2",
     description: "Öğrenciler farklı zorluk seviyelerindeki algoritma problemlerini çözerek hem bilgilerini sınayacak hem de takımlarıyla yarışacak.",
@@ -38,7 +38,7 @@ export const seedEvents = [
   {
     title: "Kampüsün Sesi: Açık Sahne",
     category: "Konser",
-    date: "2026-11-27",
+    date: "27-11-2026",
     time: "19:00",
     location: "Kampüs Amfi",
     description: "Müziğe ilgi duyan öğrenciler kendi performanslarını sergileyecek. Kampüsün yetenekleri aynı sahnede buluşacak.",
@@ -47,7 +47,7 @@ export const seedEvents = [
   {
     title: "Kampüs Ligleri: Masa Tenisi Turnuvası",
     category: "Spor",
-    date: "2026-11-30",
+    date: "30-11-2026",
     time: "15:00",
     location: "Kapalı Spor Salonu",
     description: "Farklı bölümlerden öğrencilerin katılabileceği, dostça rekabet ve takım ruhunu öne çıkaran masa tenisi turnuvası.",
